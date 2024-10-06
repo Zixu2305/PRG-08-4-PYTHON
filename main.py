@@ -8,17 +8,13 @@ from sklearn.preprocessing import StandardScaler
 from sklearn.model_selection import train_test_split
 from sklearn.feature_extraction.text import TfidfVectorizer
 from scipy.sparse import hstack, csr_matrix
-from sklearn.neural_network import MLPClassifier
-from xgboost import XGBClassifier
-import pickle
-from joblib import load
-import myFunc
+from myFunc import cleanDataframe, deployModel
 
 #Reading of dataset files
-df = pd.read_csv('./Main/data/testSampleChatgpt.csv', encoding='ISO-8859-1')
-dfClean = pd.read_csv('./Main/data/cleanedData.csv')
+df = pd.read_csv('./data/testSampleChatgpt.csv', encoding='ISO-8859-1')
+dfClean = pd.read_csv('./data/cleanedData.csv')
 df = df.drop(columns=['Unnamed: 6'])
-df = myFunc.cleanDataframe(df)
+df = cleanDataframe(df)
 
 # Separate target(label) from predictor columns
 y = df.label
@@ -37,10 +33,5 @@ sparse_features = csr_matrix(df[["urls", "totalLength", "generalConsumer", "govD
 
 X = hstack([sparse_features, contd, tfidf_matrix])
 
-with open('./Main/model/MLPClassifier_ZiHin.pkl', 'rb') as file: 
-    mlpC = pickle.load(file)
-
-mlpC_pred_prob = mlpC.predict_proba(X)
-mlpC_pred = mlpC.predict(X)
-print(mlpC_pred_prob)
-print(mlpC_pred)
+deployModel('MLPClassifier_ZiHin.pkl', X)
+deployModel('XGBoost_sebastian.joblib', X)

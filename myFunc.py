@@ -1,8 +1,6 @@
-import numpy as np 
-import pandas as pd
-
-
 def cleanDataframe(df):
+    import warnings
+    warnings.filterwarnings("ignore", 'This pattern is interpreted as a regular expression')
     df.fillna({'subject': 'no subject'}, inplace=True)
     df["emailDomain"]=df['sender'].str.split('@').str[1]
     publicEmailDomainRegex = r'^(gmail|hotmail|outlook|yahoo)\.com'
@@ -121,3 +119,21 @@ def printCM(predictLabels, trueLabels):
     # Show the plot
     plt.tight_layout()
     return plt.show()
+
+def deployModel(modelName, xFeatures):
+    from sklearn.neural_network import MLPClassifier
+    from xgboost import XGBClassifier
+    import pickle
+    import joblib
+    filePath = './model/'
+    if '.pkl' in modelName:
+        with open(filePath + modelName, 'rb') as file: 
+            model = pickle.load(file)
+    else:
+        model = joblib.load(filePath + modelName)
+
+    pred_prob = model.predict_proba(xFeatures)
+    pred = model.predict(xFeatures)
+    print(pred_prob)
+    print(pred)    
+    return
