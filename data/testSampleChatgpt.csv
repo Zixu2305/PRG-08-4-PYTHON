@@ -1,4 +1,4 @@
-sender,receiver,subject,body,label,urls,
+sender,receiver,subject,body,label,urls
 """Support Team"" support@securelogin-alerts.com",user@example.com,Urgent: Action Required to Prevent Account Suspension,"Dear Valued Customer,
 
 We have detected suspicious activity on your account that requires immediate attention. To protect your account, we have temporarily limited access until you verify your identity. If you do not verify your account within 24 hours, your account will be suspended.
@@ -22,19 +22,19 @@ Verify your account now: https://securelogin-alerts.com/verify
 For your security, failure to complete this verification will result in the permanent suspension of your account.
 Thank you for your prompt attention to this matter.
 Sincerely,The Support Teamhttps://securelogin-alerts.com
-Note: This is an automatically generated email. Please do not reply directly to this message.",1,1,
+Note: This is an automatically generated email. Please do not reply directly to this message.",1,1
 no-reply@payments.com,user@example.com,,"Dear Customer,
 Your payment has been processed successfully. Please confirm your billing details by clicking the link below:
 http://securebilling.com/payment/confirm
 If you did not authorize this payment, please cancel the transaction within the next 12 hours by following this link:
 http://securebilling.com/payment/cancel
 Thank you for your prompt attention to this matter.
-Best regards,Billing Support Teamhttp://securebilling.com",1,1,
+Best regards,Billing Support Teamhttp://securebilling.com",1,1
 jane.doe@company.com,john.smith@company.com,Project Update and Next Steps,"Hi John,
-I wanted to give you a quick update on the XYZ project. We’ve completed the initial design phase, and the team is now working on the wireframes. You can view the latest version here:http://company.com/project/xyz-wireframes
-Let me know if you have any feedback or if you'd like to schedule a quick call to go over the details. We’re aiming to finalize the designs by the end of the week, so your input would be helpful before we move to the next phase. You can also book a time for our meeting using this link:http://calendly.com/janedoe/meeting
-Thanks,Jane",0,1,
+I wanted to give you a quick update on the XYZ project. We√ïve completed the initial design phase, and the team is now working on the wireframes. You can view the latest version here:http://company.com/project/xyz-wireframes
+Let me know if you have any feedback or if you'd like to schedule a quick call to go over the details. We√ïre aiming to finalize the designs by the end of the week, so your input would be helpful before we move to the next phase. You can also book a time for our meeting using this link:http://calendly.com/janedoe/meeting
+Thanks,Jane",0,1
 emma.wilson@gmail.com,david.brown@gmail.com,Weekend Plans?,"Hey David,
-Hope you’re doing well! I was wondering if you have any plans this weekend. A few of us are thinking about going hiking at Green Valley on Saturday morning. It would be great if you could join us!
-We’re planning to meet at the trailhead around 8 AM and maybe grab lunch afterward. Let me know if you’re interested or if you have any other suggestions for the weekend.
-Talk soon,Emma",0,0,
+Hope you√ïre doing well! I was wondering if you have any plans this weekend. A few of us are thinking about going hiking at Green Valley on Saturday morning. It would be great if you could join us!
+We√ïre planning to meet at the trailhead around 8 AM and maybe grab lunch afterward. Let me know if you√ïre interested or if you have any other suggestions for the weekend.
+Talk soon,Emma",0,0

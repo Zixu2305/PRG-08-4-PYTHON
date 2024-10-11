@@ -68,6 +68,9 @@ def calculateWeight(accList):
 
 #Applies the weights to the probabilities which will determine the ensemble predictions
 def printEnsembleAccuracy(weights, probabilities, testLabel):
+    import pickle
+    import numpy as np
+    with open('../model/ensembleWeights.pkl', 'wb') as file: pickle.dump(weights, file)
     # Combine probabilities with weights
     combined_proba = (weights[0] * probabilities[0] +
                     weights[1] * probabilities[1] +
@@ -120,9 +123,33 @@ def printCM(predictLabels, trueLabels):
     plt.tight_layout()
     return plt.show()
 
+def getDF():
+    import numpy as np 
+    import pandas as pd 
+    #Reading of dataset files
+    df = pd.read_csv('./data/testSampleChatgpt.csv', encoding='ISO-8859-1')
+    dfClean = pd.read_csv('./data/cleanedData.csv')
+    df = cleanDataframe(df)
+    return df, dfClean
+
+def getFeaturesPreSplit(inputDF, cleanDF):
+    from sklearn.preprocessing import StandardScaler
+    from sklearn.feature_extraction.text import TfidfVectorizer
+    from scipy.sparse import hstack, csr_matrix
+    # TF-IDF vectorization
+    tfidf_vectorizer = TfidfVectorizer()
+    tfidf_vectorizer.fit_transform(cleanDF['fullContent'])
+    tfidf_matrix = tfidf_vectorizer.transform(inputDF['fullContent'])
+    # Continuous features normalization
+    scaler = StandardScaler()
+    contd = scaler.fit_transform(inputDF[['punctuationCount', 'subjectLength', 'bodyLength', 'totalLength']])
+
+    # Sparse binary features
+    sparse_features = csr_matrix(inputDF[["urls", "totalLength", "generalConsumer", "govDomain", "eduDomain", "orgDomain", "netDomain", "otherDomain", "html", "punctuationCount"]].values)
+   
+    return hstack([sparse_features, contd, tfidf_matrix])
+
 def deployModel(modelName, xFeatures):
-    from sklearn.neural_network import MLPClassifier
-    from xgboost import XGBClassifier
     import pickle
     import joblib
     filePath = './model/'
@@ -133,7 +160,53 @@ def deployModel(modelName, xFeatures):
         model = joblib.load(filePath + modelName)
 
     pred_prob = model.predict_proba(xFeatures)
-    pred = model.predict(xFeatures)
-    print(pred_prob)
-    print(pred)    
-    return
+    pred = model.predict(xFeatures)  
+    return printPrediction(pred_prob, pred)
+
+def getFeaturesPostSplit(inputDF, cleanDF):
+    from sklearn.model_selection import train_test_split
+    from sklearn.preprocessing import StandardScaler
+    from sklearn.feature_extraction.text import TfidfVectorizer
+    from scipy.sparse import csr_matrix
+    X = cleanDF.drop(['label'], axis=1)
+    y = cleanDF['label'] 
+    trainX, testX = train_test_split(X, test_size=0.2, random_state=1)
+    # TF-IDF vectorization
+    tfidf_vectorizer = TfidfVectorizer()
+    tfidf_vectorizer.fit_transform(trainX['fullContent'])
+    tfidf_matrix = tfidf_vectorizer.transform(inputDF['fullContent'])
+    # Continuous features normalization
+    scaler = StandardScaler()
+    contd = scaler.fit_transform(inputDF[['punctuationCount', 'subjectLength', 'bodyLength', 'totalLength']])
+
+    # Sparse binary features
+    sparse_features = csr_matrix(inputDF[['urls', 'generalConsumer', 'govDomain', 'eduDomain', 'orgDomain', 'netDomain', 'otherDomain', 'html']].values)
+   
+    return [tfidf_matrix, sparse_features, contd]
+
+def deployEnsemble(xFeatures):
+    import pickle
+    import numpy as np
+    filePath = './model/'
+    modelFiles = ['multinomialNB_zixu.pkl', 
+        'bernoulliNB_zixu.pkl',
+        'gaussianNB_zixu.pkl']
+    with open(filePath + 'ensembleWeights.pkl', 'rb') as file: 
+        weights = pickle.load(file)
+    probaList = []
+    for i in range(len(modelFiles)):
+        with open(filePath + modelFiles[i], 'rb') as file: 
+            model = pickle.load(file)
+            probaList.append(model.predict_proba(xFeatures[i]))
+
+    combined_proba = (weights[0] * probaList[0] +
+                    weights[1] * probaList[1] +
+                    weights[2] * probaList[2])
+    prediction = np.argmax(combined_proba, axis=1)
+    return printPrediction(combined_proba, prediction)
+
+def printPrediction(proba, prediction):
+    if len(prediction) == len(proba):
+        for i in range(len(prediction)):
+            value = lambda : 'Phishing' if prediction[i]==1 else 'Not Phishing'
+            print(f'Entry [{i+1}]: {value()}, probability: {proba[i]}')

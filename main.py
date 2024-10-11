@@ -8,30 +8,32 @@ from sklearn.preprocessing import StandardScaler
 from sklearn.model_selection import train_test_split
 from sklearn.feature_extraction.text import TfidfVectorizer
 from scipy.sparse import hstack, csr_matrix
-from myFunc import cleanDataframe, deployModel
+from myFunc import deployModel, getDF, getFeaturesPreSplit, getFeaturesPostSplit, deployEnsemble
 
-#Reading of dataset files
-df = pd.read_csv('./data/testSampleChatgpt.csv', encoding='ISO-8859-1')
-dfClean = pd.read_csv('./data/cleanedData.csv')
-df = df.drop(columns=['Unnamed: 6'])
-df = cleanDataframe(df)
+def mainProgram():
+    try:
+        for option in modelDict:
+            print(f'[{option}]: {modelDict[option]}')
+        print('Enter 0 to exit...')
+        modelFile = input('Which model would you like to use?: ')
+        if modelFile == '0': return 'exit'
+        if modelFile == '1': deployModel('LogisticRegression_KayCheng.pkl', inputFeature)
+        if modelFile == '2': deployModel('MLPClassifier_ZiHin.pkl', inputFeature)
+        if modelFile == '3': deployEnsemble(nbFeature)
+        if modelFile == '4': deployModel('XGBoost_sebastian.joblib', inputFeature)
+    except:
+        return print('Wrong input, try again.')
 
-# Separate target(label) from predictor columns
-y = df.label
-
-# TF-IDF vectorization
-tfidf_vectorizer = TfidfVectorizer()
-tfidf_vectorizer.fit_transform(dfClean['fullContent'])
-tfidf_matrix = tfidf_vectorizer.transform(df['fullContent'])
-
-# Continuous features normalization
-scaler = StandardScaler()
-contd = scaler.fit_transform(df[['punctuationCount', 'subjectLength', 'bodyLength', 'totalLength']])
-
-# Sparse binary features
-sparse_features = csr_matrix(df[["urls", "totalLength", "generalConsumer", "govDomain", "eduDomain", "orgDomain", "netDomain", "otherDomain", "html", "punctuationCount"]].values)
-
-X = hstack([sparse_features, contd, tfidf_matrix])
-
-deployModel('MLPClassifier_ZiHin.pkl', X)
-deployModel('XGBoost_sebastian.joblib', X)
+modelDict = {
+    '1': 'Logistic Regression',
+    '2': 'MLP Classifier',
+    '3': 'Naive Bayes Classifier Ensemble',
+    '4': 'XGBoost Classifier'
+}        
+running = True
+inputFeature = getFeaturesPreSplit(*getDF())
+nbFeature = getFeaturesPostSplit(*getDF())
+while running:
+    state = mainProgram()
+    print()
+    if state == 'exit': break
