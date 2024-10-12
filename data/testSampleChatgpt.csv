@@ -1,21 +1,5 @@
 sender,receiver,subject,body,label,urls
 """Support Team"" support@securelogin-alerts.com",user@example.com,Urgent: Action Required to Prevent Account Suspension,"Dear Valued Customer,
-
-We have detected suspicious activity on your account that requires immediate attention. To protect your account, we have temporarily limited access until you verify your identity. If you do not verify your account within 24 hours, your account will be suspended.
-
-Please follow the link below to verify your account information:
-
-Verify your account now: https://securelogin-alerts.com/verify
-
-For your security, failure to complete this verification will result in the permanent suspension of your account.
-
-Thank you for your prompt attention to this matter.
-
-Sincerely,
-The Support Team
-https://securelogin-alerts.com
-
-Dear Valued Customer,
 We have detected suspicious activity on your account that requires immediate attention. To protect your account, we have temporarily limited access until you verify your identity. If you do not verify your account within 24 hours, your account will be suspended.
 Please follow the link below to verify your account information:
 Verify your account now: https://securelogin-alerts.com/verify

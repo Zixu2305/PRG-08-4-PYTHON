@@ -1,13 +1,7 @@
-#Main.py will be where we do the master codes and the shared codes
-#Please do read the README.md file to understand the project and steps to take
-
-#Introducing libraries
-import numpy as np 
-import pandas as pd 
-from sklearn.preprocessing import StandardScaler
-from sklearn.model_selection import train_test_split
-from sklearn.feature_extraction.text import TfidfVectorizer
-from scipy.sparse import hstack, csr_matrix
+#Deployment script to run email against models
+#Run the script with python3 main.py
+#Pick option 1 through 4 to see your desired model prediction
+#Option 0 to exit the program
 from myFunc import deployModel, getDF, getFeaturesPreSplit, getFeaturesPostSplit, deployEnsemble
 
 def mainProgram():
@@ -17,10 +11,10 @@ def mainProgram():
         print('Enter 0 to exit...')
         modelFile = input('Which model would you like to use?: ')
         if modelFile == '0': return 'exit'
-        if modelFile == '1': deployModel('LogisticRegression_KayCheng.pkl', inputFeature)
-        if modelFile == '2': deployModel('MLPClassifier_ZiHin.pkl', inputFeature)
-        if modelFile == '3': deployEnsemble(nbFeature)
-        if modelFile == '4': deployModel('XGBoost_sebastian.joblib', inputFeature)
+        if modelFile == '1': return deployModel('LogisticRegression_KayCheng.pkl', inputFeature)
+        if modelFile == '2': return deployModel('MLPClassifier_ZiHin.pkl', inputFeature)
+        if modelFile == '3': return deployEnsemble(nbFeature)
+        if modelFile == '4': return deployModel('XGBoost_sebastian.joblib', inputFeature)
     except:
         return print('Wrong input, try again.')
 
