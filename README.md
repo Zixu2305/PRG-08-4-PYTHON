@@ -3,12 +3,12 @@ Where we are tackling a problem on identifying phishing emails using machine lea
 
 1. Installation of libraries that will be used in this project
 ```
-pip install numpy pandas matplotlib seaborn scikit-learn xgboost setuptools hyperopt scikit-optimize
+pip install numpy pandas matplotlib seaborn scikit-learn xgboost setuptools
 ```
 
 2. What to run before model tuning
     1. Ensure all libraries required are installed
-    2. Run all cells in dataExploration.ipynb to generate cleanedData.csv
+    2. If cleanedData.csv is not in data folder, run all cells in dataExploration.ipynb to generate file
     3. Proceed with training & tuning the model in the training folder
     4. Training file naming convention should be, >type of model<_>your name<.ipynb
     5. Save your model with pickle dump into the model folder
@@ -27,12 +27,27 @@ https://www.kaggle.com/code/stpeteishii/email-spam-prediction-xgboost
 .
 └── Main/
     ├── data/
-    │   ├── CEAS_08.csv
+    │   └── CEAS_08.csv
+    │   └── cleanedData.csv
     │   └── SpamAssasin.csv
+    │   └── testSampleChatgpt.csv
     ├── model/
-    │   └── xgboost_130524.pickle
+    │   └── bernoulliNB_zixu.pkl
+    │   └── emsembleWeights.pkl
+    │   └── gaussianNB_zixu.pkl
+    │   └── LogisticRegression_KayCheng.pkl
+    │   └── MLPClassifier_ZiHin.pkl
+    │   └── multinomialNB_zixu.pkl
+    │   └── randomforestclassifier_daniel.pkl
+    │   └── XGBoost_sebastian.pkl
     ├── training/
+    │   └── LogisticRegression_KayCheng.py
+    │   └── MLPClassifier_ZiHin.py
+    │   └── NaiveBayesEnsemble_ZiXu.py
+    │   └── RandomForestClassifier.py
     │   └── XGBoost_Sebastian.py
     ├── dataExploration.ipynb
+    ├── main.py
+    ├── myFunc.py
     └── README.md
 ```
